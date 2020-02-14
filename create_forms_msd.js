@@ -3,29 +3,22 @@ function myFunction() {
   var questions = getSheetDetails(
     "1zraMIkuCZFu1OT29-t38gymjKzwE9q2YDUsjsp-ToOk"
   );
-  Logger.log(questions);
   if (checkIfFolderAlreadyPresent("fromMethod")) {
     theFolder = createFolder("fromMethod");
-    //theFolder = DriveApp.createFolder('temp')
   } else {
     theFolder = DriveApp.getFoldersByName("fromMethod").next();
     for (var i = 1; i <= 1; i++) {
       var formName = "MSD Form Team" + teams[i][0];
-      var form = FormApp.create(formName);
-
+      var form = FormApp.create(formName)
       for (var j = 1; j < questions.length; j++) {
         if (questions[j][0] == "TEXT") {
           var textItem = form.addTextItem();
           textItem.setTitle(questions[j][1]);
         } else if (questions[j][0] == "GRID") {
           var item = form.addGridItem();
-          Logger.log(
-            "questions",
-            questions[j].filter(q => q != "")
-          );
           item
             .setTitle(questions[j][1])
-            .setRows(teams[i].slice(2))
+            .setRows(teams[i].slice(3))
             .setColumns(questions[j].slice(2).filter(q => q != ""));
           theFolder.addFile(DriveApp.getFileById(form.getId()));
         } else if (questions[j][0] == "LIST") {
@@ -42,8 +35,17 @@ function myFunction() {
             .setBounds(questions[j][2], questions[j][3]);
         }
       }
+      activeFormURL = form.getPublishedUrl()
+      Logger.log(teams[i][1])
+      sendEmail(teams[i][1], 'MSD PSR Google Form',activeFormURL)
+      
+      
     }
   }
+}
+
+function sendEmail(recipients,subject,body){
+  GmailApp.sendEmail(recipients,subject,body)
 }
 
 function getSheetDetails(sheetId) {
