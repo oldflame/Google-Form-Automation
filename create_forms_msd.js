@@ -13,54 +13,45 @@ function myFunction() {
     for (var i = 1; i < 2; i++) {
       var formName = "MSD Form Team " + teams[i][0];
       var form = FormApp.create(formName);
-      form.setTitle("DEVELOPER SECTION");
+      form.setTitle("Personal Sprint Reflection");
       for (var j = 1; j < questions.length; j++) {
         if (questions[j][0].trim() == "TEXT") {
-          var textItem = form.addParagraphTextItem();
-          textItem.setTitle(questions[j][1]);
+          var textItem = form.addParagraphTextItem().setRequired(questions[j][1]);
+          textItem.setTitle(questions[j][2]);
         } else if (questions[j][0].trim() == "GRID") {
           var item = form.addGridItem();
           item
-            .setTitle(questions[j][1])
+            .setTitle(questions[j][2])
             .setRows(teams[i].slice(2))
-            .setColumns(questions[j].slice(2).filter(q => q != ""));
+            .setColumns(questions[j].slice(3).filter(q => q != "")).setRequired(questions[j][1])
           theFolder.addFile(DriveApp.getFileById(form.getId()));
         } else if (questions[j][0].trim() == "LIST") {
           var listItemOne = form.addListItem();
-          listItemOne.setTitle(questions[j][1]);
-          optionsForList = questions[j].slice(2).filter(function(q) {
+          listItemOne.setTitle(questions[j][2]);
+          optionsForList = questions[j].slice(3).filter(function(q) {
             return q != "";
           });
-          listItemOne.setChoiceValues(optionsForList);
+          listItemOne.setChoiceValues(optionsForList).setRequired(questions[j][1]);
         } else if (questions[j][0].trim() == "SCALE") {
           var scaleItem = form.addScaleItem();
           scaleItem
-            .setTitle(questions[j][1])
-            .setBounds(questions[j][2], questions[j][3]);
+            .setTitle(questions[j][2])
+            .setBounds(questions[j][3], questions[j][4]).setRequired(questions[j][1]);
         } else if (questions[j][0].trim() == "LISTCUSTOM") {
           var listItemTwo = form.addListItem();
-          listItemTwo.setTitle(questions[j][1]);
+          listItemTwo.setTitle(questions[j][2]);
           optionsForList = teams[i].slice(2);
-          listItemTwo.setChoiceValues(optionsForList);
-        } else if (questions[j][0].trim() == "LISTSECTION") {
-          var pageBreak = form
+          listItemTwo.setChoiceValues(optionsForList).setRequired(questions[j][1]);
+        }
+        else if(questions[j][0].trim() == "PAGEBREAK"){
+        var pageBreak = form
             .addPageBreakItem()
-            .setTitle("SCRUM MASTER SECTION");
-          var listSectionItemOne = form.addMultipleChoiceItem();
-          listSectionItemOne
-            .setTitle(questions[j][1])
-            .setChoices([
-              listSectionItemOne.createChoice("Yes", pageBreak),
-              listSectionItemOne.createChoice(
-                "No",
-                FormApp.PageNavigationType.SUBMIT
-              )
-            ]);
+            .setTitle(questions[j][2]);
         }
       }
       activeFormURL = form.getPublishedUrl();
       Logger.log(teams[i][1]);
-      //sendEmail(teams[i][1], 'MSD PSR Google Form',activeFormURL)
+      sendEmail(teams[i][1], 'MSD PSR Google Form',activeFormURL)
     }
   }
 }
