@@ -10,7 +10,7 @@ function myFunction() {
   } else {
     Logger.log("Folder already present");
     theFolder = DriveApp.getFoldersByName("fromMethod").next();
-    for (var i = 1; i < 2; i++) {
+    for (var i = 1; i < teams.length; i++) {
       var formName = "MSD Form Team " + teams[i][0];
       var form = FormApp.create(formName);
       form.setTitle("Personal Sprint Reflection");
@@ -51,7 +51,7 @@ function myFunction() {
       }
       activeFormURL = form.getPublishedUrl();
       Logger.log(teams[i][1]);
-      sendEmail(teams[i][1], 'MSD PSR Google Form',activeFormURL)
+      sendEmail(teams[i][1], 'Sprint 1 - MSD PSR Google Form for Team '+teams[i][0],'Hello Team '+teams[i][0]+'. Please use this link to submit your PSR. Please fill it individually. Also, dont use links to forms given to students from other teams. URL : '+activeFormURL)
     }
   }
 }
