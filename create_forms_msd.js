@@ -4,14 +4,14 @@ function myFunction() {
     "1zraMIkuCZFu1OT29-t38gymjKzwE9q2YDUsjsp-ToOk"
   );
   Logger.log(questions);
-  if (checkIfFolderAlreadyPresent("Sprint 3 Spring 2020")) {
+  if (checkIfFolderAlreadyPresent("Sprint 4 Spring 2020")) {
     Logger.log("Creating Folder");
-    theFolder = createFolder("Sprint 3 Spring 2020");
+    theFolder = createFolder("Sprint 4 Spring 2020");
   } else {
     Logger.log("Folder already present");
-    theFolder = DriveApp.getFoldersByName("Sprint 3 Spring 2020").next();
-    for (var i = 1; i < 2; i++) {
-      var formName = "MSD Form Team " + teams[i][0]+ " Sprint 3";
+    theFolder = DriveApp.getFoldersByName("Sprint 4 Spring 2020").next();
+    for (var i = 8; i < teams.length; i++) {
+      var formName = "MSD Form Team " + teams[i][0]+ " Sprint 4";
       var form = FormApp.create(formName);
       form.setTitle("Personal Sprint Reflection");
       for (var j = 1; j < questions.length; j++) {
@@ -53,7 +53,7 @@ function myFunction() {
       form.setAllowResponseEdits(true);
       activeFormURL = form.getPublishedUrl();
       Logger.log(teams[i][1]);
-      //sendEmail(teams[i][1], 'Sprint 3 - MSD PSR Google Form for Team '+teams[i][0],'Hello Team '+teams[i][0]+'. Please use this link to submit your PSR. Please fill it individually. Also, dont use links to forms given to students from other teams. URL : '+activeFormURL)
+      sendEmail(teams[i][1], 'Sprint 4 - MSD PSR Google Form for Team '+teams[i][0],'Hello Team '+teams[i][0]+'. Please use this link to submit your PSR. Please fill it individually. Also, dont use links to forms given to students from other teams. URL : '+activeFormURL+ '\n Please note, that you can now edit your submitted responses as well.')
     }
   }
 }
